@@ -25,5 +25,8 @@
     <arg name="model" value="$(arg model)" />
     <arg name="move_forward_only" value="$(arg move_forward_only)"/>
   </include>
+  
+  <!-- <include file="$(find ros_sim)/launch/slam/explore_costmap.launch">
+  </include> -->
 
 </launch>

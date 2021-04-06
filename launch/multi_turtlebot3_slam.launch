@@ -1,0 +1,79 @@
+<launch>
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="first_tb3"  default="tb3_0"/>
+  <arg name="second_tb3" default="tb3_1"/>
+  <!-- <arg name="third_tb3"  default="tb3_2"/> -->
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find ros_sim)/description/urdf/turtlebot3_$(arg model).urdf.xacro" />
+
+  <group ns = "$(arg first_tb3)">
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg first_tb3)" />
+    </node>
+
+    <include file="$(find ros_sim)/launch/slam/turtlebot3_gmapping.launch">
+      <arg name="model" value="$(arg model)"/>
+      <arg name="set_base_frame" value="$(arg first_tb3)/base_footprint"/>
+      <arg name="set_odom_frame" value="$(arg first_tb3)/odom"/>
+      <arg name="set_map_frame" value="$(arg first_tb3)/map"/>
+    </include>
+    <!--move_base-->
+    <include file="$(find ros_sim)/launch/navigation/multi_move_base.launch">
+      <arg name="robot_namespace" value="$(arg first_tb3)"/>
+    </include>
+  </group>
+
+  <group ns = "$(arg second_tb3)">
+
+  <!--Description of robot-->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg second_tb3)" />
+    </node>
+
+    <include file="$(find ros_sim)/launch/slam/turtlebot3_gmapping.launch">
+      <arg name="model" value="$(arg model)"/>
+      <arg name="set_base_frame" value="$(arg second_tb3)/base_footprint"/>
+      <arg name="set_odom_frame" value="$(arg second_tb3)/odom"/>
+      <arg name="set_map_frame" value="$(arg second_tb3)/map"/>
+    </include>
+    <!--move_base-->
+    <include file="$(find ros_sim)/launch/navigation/multi_move_base.launch">
+      <arg name="robot_namespace" value="$(arg second_tb3)"/>
+    </include>
+
+  </group>
+
+  <!-- <group ns = "$(arg third_tb3)">
+
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg third_tb3)" />
+    </node>
+
+    <include file="$(find ros_sim)/launch/slam/turtlebot3_gmapping.launch">
+      <arg name="model" value="$(arg model)"/>
+      <arg name="set_base_frame" value="$(arg third_tb3)/base_footprint"/>
+      <arg name="set_odom_frame" value="$(arg third_tb3)/odom"/>
+      <arg name="set_map_frame" value="$(arg third_tb3)/map"/>
+    </include>
+    move_base
+    <include file="$(find ros_sim)/launch/navigation/multi_move_base.launch">
+      <arg name="robot_namespace" value="$(arg third_tb3)"/>
+    </include>
+
+  </group> -->
+
+  <include file="$(find ros_sim)/launch/slam/multi_map_merge.launch">
+  </include>
+
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find ros_sim)/rviz/multi_turtlebot3_slam.rviz"/>
+          
+  </group>
+
+</launch>
