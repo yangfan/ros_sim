@@ -1,0 +1,59 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <arg name="first_tb3"  default="tb3_0"/>
+  <arg name="second_tb3" default="tb3_1"/>
+  <arg name="open_rviz"  default="true"/>
+  <arg name="move_forward_only" default="false"/>
+  <arg name="map_file" default="$(find ros_sim)/maps/tb3_map.yaml"/>
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(find ros_sim)/description/urdf/turtlebot3_$(arg model).urdf.xacro" />
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <group ns = "$(arg first_tb3)">
+    <!--robot_state_publisher, publishing state of robot to tf-->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg first_tb3)" />
+    </node>
+
+    <!-- AMCL -->
+    <include file="$(find ros_sim)/launch/navigation/amcl_ns.launch">
+      <arg name="robot_namespace" value="$(arg first_tb3)"/>
+    </include>
+
+    <!--move_base-->
+    <include file="$(find ros_sim)/launch/navigation/multi_move_base.launch">
+      <arg name="model" value="$(arg model)" />
+      <arg name="robot_namespace" value="$(arg first_tb3)"/>
+      <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+    </include>
+  </group>
+
+  <group ns = "$(arg second_tb3)">
+    <!--robot_state_publisher, publishing state of robot to tf-->
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+      <param name="publish_frequency" type="double" value="50.0" />
+      <param name="tf_prefix" value="$(arg second_tb3)" />
+    </node>
+
+    <!-- AMCL -->
+    <include file="$(find ros_sim)/launch/navigation/amcl_ns.launch">
+      <arg name="robot_namespace" value="$(arg second_tb3)"/>
+    </include>
+
+    <!--move_base-->
+    <include file="$(find ros_sim)/launch/navigation/multi_move_base.launch">
+      <arg name="model" value="$(arg model)" />
+      <arg name="robot_namespace" value="$(arg second_tb3)"/>
+      <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+    </include>
+  </group>
+
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find ros_sim)/rviz/multi_turtlebot3_navigation.rviz"/>
+  </group>
+
+</launch>

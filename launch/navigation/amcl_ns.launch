@@ -1,4 +1,5 @@
 <launch>
+  <arg name="robot_namespace"/>
   <arg name="scan_topic"     default="scan"/>
   <arg name="initial_pose_x" default="0.0"/>
   <arg name="initial_pose_y" default="0.0"/>
@@ -7,14 +8,17 @@
   <node pkg="amcl" type="amcl" name="amcl">
 
     <rosparam file="$(find ros_sim)/param/amcl_params.yaml" command="load" />
-
+    
     <param name="initial_pose_x"            value="$(arg initial_pose_x)"/>
     <param name="initial_pose_y"            value="$(arg initial_pose_y)"/>
     <param name="initial_pose_a"            value="$(arg initial_pose_a)"/>
-    <param name="odom_frame_id"             value="odom"/>
-    <param name="base_frame_id"             value="base_footprint"/>
+    <param name="odom_frame_id"             value="$(arg robot_namespace)/odom"/>
+    <param name="base_frame_id"             value="$(arg robot_namespace)/base_footprint"/>
+    <param name="use_map_topic"             value="true"/>
     
+    <remap from="map"                       to="/map"/>
     <remap from="scan"                      to="$(arg scan_topic)"/>
-
+  
   </node>
+
 </launch>

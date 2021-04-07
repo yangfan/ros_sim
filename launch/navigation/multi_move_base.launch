@@ -32,7 +32,7 @@
 	     value="$(arg robot_namespace)/base_footprint"/>
 
       <!-- Centralized map server -->
-      <!-- <remap from="map" to="/map"/> -->
+      <remap from="map" to="/map"/>
       <param name="DWAPlannerROS/min_vel_x" value="0.0" if="$(arg move_forward_only)" />
     </node>
   <!-- </group> -->
