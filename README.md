@@ -60,6 +60,8 @@ Note: this example requires [multirobot_map_merge package](https://github.com/hr
 (4) Save the map after every corner of the map is scanned by robots together.
 `rosrun map_server map_saver -f ~/map`
 
+![GitHub Logo](demo/tb3_map.png)
+
 ![GitHub Logo](demo/multi_slam.gif)
 
 Computation graph:
