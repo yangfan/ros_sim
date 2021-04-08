@@ -87,7 +87,7 @@ Computation graph:
 
 ![GitHub Logo](rqt_graph/multi_nav.png)
 
-The localization node amcl for each robot is defined under the robot's namespace `tb3_0` and `tb3_1`. Therefore its published and subscribed topics are under the robot's namespace. Make sure `use_map_topic=true` so that the map is received by subscription instead of making a service call. And `remap from="map" to="/map"` so that all amcl nodes subscribe to the same global map published by the map_server node.
+Each robot has its own amcl node for localization, which is defined under the robot's namespace `tb3_0` and `tb3_1`. Therefore the amcl's published and subscribed topics are under the robot's namespace. Make sure `use_map_topic=true` so that the map is received by subscription instead of making a service call. And `remap from="map" to="/map"` so that all amcl nodes subscribe to the same global map published by the map_server node.
 
 ## Reference
 
