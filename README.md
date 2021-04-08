@@ -15,7 +15,7 @@ The [turtlebot3 packages](https://github.com/ROBOTIS-GIT/turtlebot3) may not be 
 (2) Run the SLAM nodes
 `roslaunch ros_sim turtlebot3_slam.launch`
 
-(3) Click on 2D Nav Goal on rviz tool panel. Select a pose in rviz. Robot will be exploiting the unknown area and drawing the map.
+(3) Now we need robot to move around the unknown area and compute the occupancy map. A simple method to control the robot is to publish the twist message to topic `/cmd_vel` or use a teleop program. However controlling robot directly may cause the collision with the obstacle especially for people unfamiliar with keyboard teleop. Here we use move_base node so that we can specify the goal pose by clicking on 2D Nav Goal button on rviz tool panel and move_base node can compute a safer velocity command based on the odometry and laser scan reading.
 
 (4) Save the map after scanning every corner of the map.
 `rosrun map_server map_saver -f ~/map`
