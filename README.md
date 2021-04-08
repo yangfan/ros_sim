@@ -5,7 +5,7 @@ Please make sure the ros 2D navigation stack is properly installed. Use the comm
 
 Or install from [source](https://github.com/ros-planning/navigation).
 
-The [turtlebot3 packages](https://github.com/ROBOTIS-GIT/turtlebot3) may not be required since this repository already includes the robot descriptions of turtlebot3.
+Please also install [turtlebot3 packages](https://github.com/ROBOTIS-GIT/turtlebot3) (including turtlebot3, turtlebot3_msgs and turtlebot3_simulation).
 
 ## Mapping in Gazebo
 
