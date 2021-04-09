@@ -5,7 +5,10 @@ Please make sure the ros 2D navigation stack is properly installed. Use the comm
 
 Or install from [source](https://github.com/ros-planning/navigation).
 
-Please also install [turtlebot3 packages](https://github.com/ROBOTIS-GIT/turtlebot3) (including turtlebot3, turtlebot3_msgs and turtlebot3_simulation).
+Gmapping package is also required. To install gmapping
+`sudo apt-get install ros-melodic-slam-gmapping`
+
+Note that ROS noetic does not support the parameter `tf_prefix` in `robot_state_publisher` as discuss in issue [#125](https://github.com/ros/robot_state_publisher/issues/125). Therefore, the multi-robot SLAM and navigation launch files do not work in ROS noetic. There is a [pull request](https://github.com/ros/robot_state_publisher/pull/139) discussed. Hopefully the PR will be merged soon.
 
 ## Mapping in Gazebo
 
@@ -15,7 +18,7 @@ Please also install [turtlebot3 packages](https://github.com/ROBOTIS-GIT/turtleb
 (2) Run the SLAM nodes
 `roslaunch ros_sim turtlebot3_slam.launch`
 
-(3) Now we need robot to move around the unknown area and compute the occupancy map. A simple method to control the robot is to publish the twist message to topic `/cmd_vel` or use a teleop program. However controlling robot directly may cause the collision with the obstacle especially for people unfamiliar with keyboard teleop. Here we use move_base node so that we can specify the goal pose by clicking on 2D Nav Goal button on rviz tool panel and move_base node can compute a safer velocity command based on the odometry and laser scan reading.
+(3) Now we need robot to move around the unknown area and compute the occupancy map. A simple method to control the robot is to publish the twist message to topic `/cmd_vel` or use a teleop node. However controlling robot directly may cause the collision with the obstacle especially for people (like me) not comfortable with keyboard teleop. Here we use move_base node so that we can specify the goal pose by clicking on 2D Nav Goal button on rviz tool panel and move_base node can compute a safer velocity command based on the odometry and laser scan reading.
 
 (4) Save the map after scanning every corner of the map.
 `rosrun map_server map_saver -f ~/map`
