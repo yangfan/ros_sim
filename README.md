@@ -8,7 +8,7 @@ Or install from [source](https://github.com/ros-planning/navigation).
 Gmapping package is also required. To install gmapping
 `sudo apt-get install ros-melodic-slam-gmapping`
 
-Note that ROS noetic does not support the parameter `tf_prefix` in `robot_state_publisher` as discuss in issue [#125](https://github.com/ros/robot_state_publisher/issues/125). Therefore, the multi-robot SLAM and navigation launch files do not work in ROS noetic. There is a [pull request](https://github.com/ros/robot_state_publisher/pull/139) discussed. Hopefully the PR will be merged soon.
+Note that ROS noetic does not support the parameter `tf_prefix` in `robot_state_publisher` as discussed in issue [#125](https://github.com/ros/robot_state_publisher/issues/125). Therefore, the multi-robot SLAM and navigation launch files do not work in ROS noetic. There is a [pull request](https://github.com/ros/robot_state_publisher/pull/139) discussed. Hopefully the PR will be merged soon.
 
 ## Mapping in Gazebo
 
